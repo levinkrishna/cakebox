@@ -1,6 +1,6 @@
 from django import forms
 
-from cakebox.models import User,Category
+from cakebox.models import User,Category,Cakes
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -18,3 +18,8 @@ class CategoryCreateForm(forms.ModelForm):
     class Meta:
         model=Category
         fields=["name"]
+
+class CakeAddForm(forms.ModelForm):
+    class Meta:
+        model=Cakes
+        fields="__all__"
