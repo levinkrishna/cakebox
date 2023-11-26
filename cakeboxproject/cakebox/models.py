@@ -36,6 +36,17 @@ class Cakes(models.Model):
 
     category=models.ForeignKey(Category,null=True,on_delete=models.SET_NULL)
 
+    @property
+    def varients(self):
+        qs=self.cakevarients_set.all()
+        return qs
+    
+    @property
+    def reviews(self):
+        qs=self.reviews_set.all()
+        return qs
+        
+
     def __str__(self):
         return self.name
 
@@ -55,6 +66,8 @@ class CakeVarients(models.Model):
     shape=models.CharField(max_length=200,choices=options1,default="Circle")
     weight=models.CharField(max_length=200,choices=options2,default="1kg")
     cake=models.ForeignKey(Cakes,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.cake.name
 
 
 class Offers(models.Model):
@@ -97,6 +110,6 @@ from django.core.validators import MinValueValidator,MaxValueValidator
 
 class Reviews(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    cakevarient=models.ForeignKey(CakeVarients,on_delete=models.CASCADE)
+    cake=models.ForeignKey(Cakes,null=True,on_delete=models.SET_NULL)
     rating=models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
     comment=models.CharField(max_length=300)
