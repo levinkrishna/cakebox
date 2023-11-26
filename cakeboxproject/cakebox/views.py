@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 
 from django.db import models
-from django.views.generic import CreateView,FormView,ListView,UpdateView,DetailView
+from django.views.generic import CreateView,FormView,ListView,UpdateView,DetailView,TemplateView
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -60,7 +60,7 @@ class SignInView(FormView):
             if usr:
                 login(request,usr)
                 messages.success(request,"login successfully")
-                return redirect("signin")
+                return redirect("index")
             else:
                 messages.error(request,"invalid creadential")
                 return render(request,self.template_name,{"form":form})
@@ -98,7 +98,7 @@ class CakeCreateView(CreateView):
     template_name="cakebox/cake_add.html"
     model=Cakes
     form_class=CakeAddForm
-    success_url=reverse_lazy("cake-add")
+    success_url=reverse_lazy("cake-list")
 
     def form_valid(self,form):
         messages.success(self.request,"cake has been added")
@@ -213,4 +213,7 @@ def offer_delete_view(request,*args,**kwargs):
 def sign_out_view(request,*args,**kwargs):
     logout(request)
     return redirect("signin")
+
+class indexView(TemplateView):
+    template_name="cakebox/index.html"
     
